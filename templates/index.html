@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<script>
+    function myFunction() {
+        ws = new WebSocket("ws://localhost:8080/echo");
+
+        ws.onopen = function () {
+            document.getElementById("conn_status").style.display = "flex";
+            ws.send("socket open!");
+        };
+
+        ws.onclose = function (evt) {
+            document.getElementById("conn_status").style.display = "none";
+        };
+
+        ws.onmessage = function (evt) {
+            var para = document.createElement("p");
+            para.style.display = "flex";
+            para.innerHTML = ">" + evt.data;
+            document.getElementById("chat").appendChild(para);
+        };
+    }
+</script>
+<body>
+    <h1>Welcome to Live Broadcast demo website!</h1>
+    <p id="demo">Talk to Chatbot to get the response message.</p>
+
+    <div id="conn_status" style="display: none">
+        <span class="dot"></span>
+        <p>已連線</p>
+    </div>
+
+    <button type="button" onclick="myFunction()">點我開始聊天</button>
+    <input id="lname" name="lname" type="text"><br><br>
+    <input type="submit" value="Submit"onclick="sendText(document.getElementById('lname').value)">
+
+    <div id="chat" style=""></div>
+</body>
+</html>
